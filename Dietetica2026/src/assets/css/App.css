@@ -1,0 +1,24 @@
+#root {
+  min-height: 100vh;
+}
+
+.app-shell {
+  --page-background: #ffffff;
+  --page-text: #1f2933;
+  --control-border: #8a949d;
+  --control-background: transparent;
+  min-height: 100vh;
+  background: var(--page-background);
+  color: var(--page-text);
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.app-shell[data-theme='dark'] {
+  --page-background: #272626;
+  --page-text: #f4f4f4;
+  --control-border: #a8a8a8;
+}
+
+.pages-section {
+  min-height: calc(100vh - 77px);
+}

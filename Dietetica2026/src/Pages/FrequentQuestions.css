@@ -1,0 +1,97 @@
+.faq-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.75fr);
+  gap: clamp(1rem, 3vw, 2rem);
+  min-height: calc(100vh - 77px);
+  align-items: start;
+  padding: clamp(1rem, 4vw, 3rem);
+  background:
+    linear-gradient(rgb(0 0 0 / 18%), rgb(0 0 0 / 18%)),
+    url('/images/tienda.jpg') center / cover no-repeat;
+}
+
+.faq-list {
+  width: min(760px, 100%);
+  justify-self: center;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid rgb(255 255 255 / 55%);
+  border-radius: 0.75rem;
+  background: rgb(20 45 21 / 78%);
+  color: #fff;
+}
+
+.faq-list__title {
+  margin-bottom: 1rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+}
+
+.faq-list details {
+  padding: 0.9rem 0;
+  border-top: 1px solid rgb(255 255 255 / 35%);
+}
+
+.faq-list summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.faq-list p {
+  margin: 0.6rem 0 0;
+}
+
+.faq-list a {
+  color: #d3f4c5;
+}
+
+.faq-contact {
+  display: flex;
+  justify-content: center;
+}
+
+.faq-contact-form {
+  width: min(420px, 100%);
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+  border: 1px solid rgb(255 255 255 / 55%);
+  border-radius: 0.75rem;
+  background: rgb(20 45 21 / 68%);
+  color: #fff;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 90%);
+}
+
+.faq-contact-form__title {
+  margin-bottom: 0.75rem;
+  color: #fff;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-shadow: 0 2px 3px rgb(0 0 0 / 90%);
+}
+
+.faq-contact-form .form-label {
+  margin-bottom: 0.25rem;
+  color: #fff;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 90%);
+}
+
+.faq-contact-form .form-control {
+  background-color: #fff;
+  color: #212529;
+  text-shadow: none;
+}
+
+@media (max-width: 600px) {
+  .faq-page {
+    grid-template-columns: 1fr;
+  }
+
+  .faq-contact-form {
+    width: min(360px, 100%);
+    padding: 0.75rem;
+  }
+
+  .faq-contact-form__title {
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem;
+  }
+}
