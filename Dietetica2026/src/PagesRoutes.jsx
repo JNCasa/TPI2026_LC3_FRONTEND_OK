@@ -24,6 +24,8 @@ import Protected from './components/Protected.jsx'
 
 function PagesRoutes({
   catalogProducts,
+  onProductDeleted,
+  onPurchaseConfirmed,
   products,
   setProducts,
   visible_del_padre,
@@ -73,7 +75,11 @@ function PagesRoutes({
           <Route
             path="/Ticket"
             element={
-              <Ticket products={products} setProducts={setProducts} />
+              <Ticket
+                products={products}
+                setProducts={setProducts}
+                onPurchaseConfirmed={onPurchaseConfirmed}
+              />
             }
           />
         </Route>
@@ -87,7 +93,10 @@ function PagesRoutes({
             />
           }
         >
-          <Route path="/ListProducts" element={<ListProducts />} />
+          <Route
+            path="/ListProducts"
+            element={<ListProducts onProductDeleted={onProductDeleted} />}
+          />
         </Route>
 
         <Route

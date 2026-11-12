@@ -8,7 +8,8 @@ function formatConfirmationDate(registeredDate) {
   const confirmationDate =
     parsedDate && !Number.isNaN(parsedDate.getTime())
       ? parsedDate
-      : new Date()
+      : new Date() //Si parsedDate existe y es válida, usa parsedDate.
+                  // Si no existe o es inválida, usa new Date(), es decir, la fecha y hora actuales.
 
   return {
     fecha: confirmationDate.toLocaleDateString('es-AR', {
@@ -20,13 +21,13 @@ function formatConfirmationDate(registeredDate) {
   }
 }
 
-function Ticket({ products, setProducts }) {
+function Ticket({ products, setProducts, onPurchaseConfirmed }) {
   const navigate = useNavigate()
   const [confirmed, setConfirmed] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [ticketFecha, setTicketFecha] = useState(null)
-  const [ticketProducts] = useState(products)
+  const [ticketProducts] = useState(products) // arreglo con el valor de products
 
   const montoTotal = ticketProducts.reduce(
     (total, product) => total + Number(product.monto),
@@ -47,8 +48,8 @@ function Ticket({ products, setProducts }) {
       return
     }
 
-    setSubmitting(true)
-
+    setSubmitting(true)//mientras espera la respuesta, el botón muestra «Confirmando...» y queda deshabilitad
+//Dentro de try, envía al servidor un POST a /api/Tickets, incluyendo los productos y el monto total.
     try {
       const response = await fetch('/api/Tickets', {
         method: 'POST',
@@ -64,31 +65,32 @@ function Ticket({ products, setProducts }) {
           monto_total: montoTotal,
         }),
       })
-
+//Revisa la respuesta. Si el servidor indica un error, lanza una excepción.
       const responseBody = await response.text()
       if (!response.ok) {
         throw new Error(
           `No se pudo registrar el ticket (${response.status})${responseBody ? `: ${responseBody}` : '.'}`,
         )
       }
-
+//Si la compra se registró, intenta obtener la fecha de la respuesta.
       let fechaRegistrada = ''
       if (responseBody) {
         try {
           const registeredTicket = JSON.parse(responseBody)
           fechaRegistrada = registeredTicket?.fecha ?? ''
         } catch {
-          // Algunas respuestas exitosas del endpoint no contienen JSON.
+          
         }
       }
-
+      onPurchaseConfirmed?.(ticketProducts)
+//Si ocurre un error, lo muestra en pantalla mediante setError.
       setTicketFecha(formatConfirmationDate(fechaRegistrada))
       setProducts([])
       setConfirmed(true)
     } catch (requestError) {
       setError(requestError.message)
     } finally {
-      setSubmitting(false)
+      setSubmitting(false) //cuando termina, permite volver a usar el botón.
     }
   }
 

@@ -3,16 +3,18 @@ import ProductosDiet from '../components/Storecomp/ProductosDiet.jsx'
 import './Store.css'
 
 function Store({ catalogProducts, setProducts, visible_del_padre }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate() // obtiene la función de navegación de React Router
   const visible = visible_del_padre === 'Cliente'
-
+// cuando visible_del_padre vale exactamente 'Cliente'. 
+// En ese caso se muestran los productos y el botón
+//  «Ver compra». La sección de la página se renderiza siempre; lo condicional es ese contenido.
   return (
     <section className="store-page">
       {visible && (
         <>
           <ProductosDiet
-            products={catalogProducts}
-            setProducts={setProducts}
+            products={catalogProducts}//prop con el catalogo
+            setProducts={setProducts}// funcion e ProductosDiet pueda actualizar esos producto
           />
           <button
             type="button"

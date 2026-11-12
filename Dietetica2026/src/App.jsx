@@ -9,9 +9,10 @@ import PagesRoutes from './PagesRoutes.jsx'
 import { useEffect, useState } from 'react'
 import { obtenerUsuarioActual, obtenerRol } from './services/auth.js'
 import { resolveProductImage } from './utils/productImage.js'
-
+//--- esta dentro de APP jsx
 function AppLayout({
   catalogProducts,
+  setCatalogProducts,
   products,
   setProducts,
   visible_del_padre,
@@ -30,6 +31,21 @@ function AppLayout({
         catalogProducts={catalogProducts}
         products={products}
         setProducts={setProducts}
+        onProductDeleted={(productId) => setCatalogProducts((currentProducts) => (
+          currentProducts.filter((product) => product.id !== productId)
+        ))}
+        onPurchaseConfirmed={(purchasedProducts) => {
+          const quantitiesById = new Map(
+            purchasedProducts.map((product) => [product.id, Number(product.cantidad)]),
+          )
+          setCatalogProducts((currentProducts) => currentProducts.map((product) => ({
+            ...product,
+            stock: Math.max(
+              0,
+              Number(product.stock) - (quantitiesById.get(product.id) ?? 0),
+            ),
+          })))
+        }}
         visible_del_padre={visible_del_padre}
         setVisible_del_padre={setVisible_del_padre}
         isSessionLoading={isSessionLoading}
@@ -41,6 +57,7 @@ function AppLayout({
   )
 }
 
+// ------------------------------
 function App() {
   const [catalogProducts, setCatalogProducts] = useState([])
   const [products, setProducts] = useState([])
@@ -90,7 +107,8 @@ function App() {
       .catch((error) => {
         if (error.name !== 'AbortError') console.error(error)
       })
-
+// isSessionLoading: espera a que termine la verificación de la sesión.
+// visible_del_padre: detecta cuando ya se conoce el rol del usuario.
     return () => controller.abort()
   }, [isSessionLoading, visible_del_padre])
 
@@ -99,6 +117,7 @@ function App() {
       <BrowserRouter>
         <AppLayout
           catalogProducts={catalogProducts}
+          setCatalogProducts={setCatalogProducts}
           products={products}
           setProducts={setProducts}
           visible_del_padre={visible_del_padre}

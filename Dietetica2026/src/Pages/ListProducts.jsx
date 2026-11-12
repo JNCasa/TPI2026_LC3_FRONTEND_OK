@@ -63,7 +63,7 @@ async function fetchProducts(signal, token) {
   return data.map(mapProduct)
 }
 
-function ListProducts() {
+function ListProducts({ onProductDeleted }) {
   const [products, setProducts] = useState([])
   const [form, setForm] = useState(EMPTY_FORM)
   const [editingProductId, setEditingProductId] = useState(null)
@@ -170,14 +170,17 @@ function ListProducts() {
     if (!window.confirm(`¿Querés eliminar "${product.title}"?`)) return
 
     setError('')
-    setSaving(true)
     const token = localStorage.getItem('token')?.trim()
     if (!token) {
       setError('Iniciá sesión para eliminar productos.')
-      setSaving(false)
+      return
+    }
+    if (product.id === null || product.id === undefined || product.id === '') {
+      setError('No se pudo identificar el producto que querés eliminar.')
       return
     }
 
+    setSaving(true)
     try {
       const response = await fetch(`${PRODUCTS_ENDPOINT}/${product.id}`, {
         method: 'DELETE',
@@ -188,8 +191,11 @@ function ListProducts() {
         throw new Error(getErrorMessage(data, 'No se pudo eliminar el producto'))
       }
 
-      setProducts(await fetchProducts(undefined, token))
+      setProducts((currentProducts) => currentProducts.filter(
+        (currentProduct) => currentProduct.id !== product.id,
+      ))
       if (editingProductId === product.id) resetForm()
+      onProductDeleted?.(product.id)
     } catch (requestError) {
       setError(requestError.message)
     } finally {
@@ -212,7 +218,7 @@ function ListProducts() {
     height="40"
     className="me-2"
   />Gestión de productos</h1>
-          <p>Creá productos y mantené actualizado el catálogo.</p>
+          <p>Creá, editá y eliminá productos del catálogo.</p>
         </div>
         <span className="products-admin__count">{products.length} productos</span>
       </header>
@@ -374,7 +380,8 @@ function ListProducts() {
                       <div className="products-table__actions">
                         <button
                       
-                          type="button"class="btn btn-primary"
+                          className="products-button products-button--edit"
+                          type="button"
                           aria-label={`Editar ${product.title}`}
                           onClick={() => editProduct(product)}
                           disabled={saving}
@@ -383,7 +390,8 @@ function ListProducts() {
                         </button>
                         <button
                       
-                          type="button"class="btn btn-danger"
+                          type="button"
+                          className="products-button products-button--delete"
                           aria-label={`Eliminar ${product.title}`}
                           onClick={() => deleteProduct(product)}
                           disabled={saving}

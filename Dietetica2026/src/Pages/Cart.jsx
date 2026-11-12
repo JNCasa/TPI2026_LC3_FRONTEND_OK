@@ -1,16 +1,18 @@
 import { useNavigate } from 'react-router-dom'
 
 function Cart({ products, setProducts }) {
+//   products es el arreglo con los productos elegidos y sus cantidades.
+// setProducts es la función que permite actualizar ese arreglo
   const navigate = useNavigate()
   const montoTotal = products.reduce(
     (total, product) => total + Number(product.monto),
     0,
   )
-
+//filter crea y devuelve otro arreglo sin el producto que se quiere quitar.
   function removeProduct(productId) {
     setProducts((currentProducts) =>
       currentProducts.filter((product) => product.id !== productId),
-    )
+    ) 
   }
 
   return (
@@ -57,7 +59,7 @@ function Cart({ products, setProducts }) {
               {products.map((product, index) => {
                 const quantity = Number(product.cantidad)
                 const subtotal = Number(product.monto)
-                const unitPrice = quantity > 0 ? subtotal / quantity : 0
+                const unitPrice = quantity > 0 ? subtotal / quantity : 0 // calculo del precio unit
 
                 return (
                   <tr key={product.id}>

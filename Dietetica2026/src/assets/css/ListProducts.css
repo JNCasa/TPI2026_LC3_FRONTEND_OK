@@ -166,26 +166,36 @@
   background: var(--products-accent-hover);
 }
 
-.products-button--secondary,
-.products-button--edit {
+.products-button--secondary {
   border-color: var(--products-border);
   background: transparent;
   color: inherit;
 }
 
-.products-button--secondary:hover,
-.products-button--edit:hover {
+.products-button--edit {
+  border-color: #0d6efd;
+  background: #0d6efd;
+  color: #ffffff;
+}
+
+.products-button--secondary:hover {
   background: color-mix(in srgb, var(--products-accent) 9%, var(--products-surface));
 }
 
+.products-button--edit:hover {
+  border-color: #0b5ed7;
+  background: #0b5ed7;
+}
+
 .products-button--delete {
-  border-color: #e8c9c5;
-  background: transparent;
-  color: #a33d32;
+  border-color: #dc3545;
+  background: #dc3545;
+  color: #ffffff;
 }
 
 .products-button--delete:hover {
-  background: #fbefed;
+  border-color: #bb2d3b;
+  background: #bb2d3b;
 }
 
 .products-table-wrapper {

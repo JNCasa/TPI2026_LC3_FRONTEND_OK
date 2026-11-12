@@ -14,8 +14,10 @@ function ProductosDiet({ products, setProducts }) {
       <div className="d-flex flex-wrap justify-content-center">
         {products.map((product) => (
           <div key={product.id} className="m-2">
+      
             <Card
-              setProducts={setProducts}
+              setProducts={setProducts}// funcion para actualizar 
+            
               id={product.id}
               title={product.title}
               description={product.description}

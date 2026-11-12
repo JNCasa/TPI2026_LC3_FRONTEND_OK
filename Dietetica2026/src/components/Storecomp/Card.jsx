@@ -9,6 +9,7 @@ function Card({ id, title, description, weight, price, image, stock, setProducts
 // Si no es un número válido, usa 0.
   const updateSelectedProduct = (nuevaCantidad) => {
     const precio = Number(String(price).replace(/[^0-9,.-]/g, '').replace(',', '.'))
+    
     const productoSeleccionado = {
       id,
       title,
@@ -21,18 +22,18 @@ function Card({ id, title, description, weight, price, image, stock, setProducts
     }
 
     setProducts((productos) => {
-      const indice = productos.findIndex((product) => product.id === id)
-
+      const indice = productos.findIndex((product) => product.id === id)//Así evita que el mismo producto aparezca duplicado en el carrito
+// si no lo encuentra devuelve -1
       if (nuevaCantidad === 0) {
         return productos.filter((product) => product.id !== id)
       }
 
       if (indice === -1) {
-        return [...productos, productoSeleccionado]
+        return [...productos, productoSeleccionado]// agrega el producto selccionado al nuevo objeto creado
       }
 
       return productos.map((product, i) => (
-        i === indice ? productoSeleccionado : product
+        i === indice ? productoSeleccionado : product //Si es el producto que ya estaba en el carrito, lo reemplaza por productoSeleccionado (con la cantidad nueva). Si no, deja ese producto igual.
       ))
     })
   }
@@ -70,7 +71,7 @@ function Card({ id, title, description, weight, price, image, stock, setProducts
               type="button"
               className="btn btn-success btn-lg shadow-sm"
               onClick={restar}
-              disabled={cantidad === 0}
+              disabled={cantidad === 0}// cero como limite inf
               aria-label={`Disminuir cantidad de ${title}`}
             >
               -
@@ -79,8 +80,8 @@ function Card({ id, title, description, weight, price, image, stock, setProducts
               type="button"
               className="btn btn-success btn-lg shadow-sm"
               onClick={sumar}
-              disabled={cantidad >= stockDisponible}
-              aria-label={`Aumentar cantidad de ${title}`}
+              disabled={cantidad >= stockDisponible}//tope stock disp.
+              aria-label={`Aumentar cantidad de ${title}`} // lector de voz
             >
               +
             </button>

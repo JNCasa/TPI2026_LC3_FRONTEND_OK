@@ -76,3 +76,7 @@ export function obtenerRol(usuario) {
   if (normalized.includes('cliente') || normalized.includes('customer')) return 'Cliente'
   return ''
 }
+// Envía un POST a /api/auth/register.
+// Manda el nombre y el email sin espacios al principio o al final, junto con la contraseña, en formato JSON.
+// Si el servidor responde con un error, lanza un mensaje para que la pantalla lo muestre.
+// Si todo sale bien, devuelve los datos del usuario que responda el servidor.
